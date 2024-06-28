@@ -6,6 +6,7 @@ import { StaticImageData } from "next/image";
 import { shirtViewImages } from "@/constant";
 import React from "react";
 import ProductDetailSection from "@/page-sections/DetailProduct/ProductSection";
+import { MetaTags } from "..";
 
 export interface ProductDetailProps extends ProductProps {
   images: string[] | StaticImageData[];
@@ -18,6 +19,7 @@ const ProductDetail: React.FC<{
 }> = ({ product }) => {
   return (
     <>
+      <MetaTags />
       <Navbar />
       <ProductDetailSection {...product} />
       <Footer />

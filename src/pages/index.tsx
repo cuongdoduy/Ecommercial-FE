@@ -19,11 +19,13 @@ const Home: React.FC = () => {
     setActiveIndex(index);
   };
 
-  const [newArrivalProducts, setNewArrivalProducts] = React.useState<ProductProps[]>([]);
+  const [newArrivalProducts, setNewArrivalProducts] = React.useState<
+    ProductProps[]
+  >([]);
   const [saleProducts, setSaleProducts] = React.useState<ProductProps[]>([]);
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch("/api/products",{
+      const response = await fetch("/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +52,10 @@ const Home: React.FC = () => {
           activeIndex={activeIndex}
           handleActiveIndex={handleActiveIndex}
         /> */}
-        <ProductSection products={newArrivalProducts} sectionName="NEW ARRIVALS" />
+        <ProductSection
+          products={newArrivalProducts}
+          sectionName="NEW ARRIVALS"
+        />
         <ProductSection products={saleProducts} sectionName="TOP SELLING" />
         <Categories />
         <Forum />
@@ -61,17 +66,17 @@ const Home: React.FC = () => {
   );
 };
 
-const MetaTags = () => {
+export const MetaTags = () => {
   return (
     <Head>
-      <title>Hàng Việt Tại Úc - Mua bán sản phẩm yêu thích của bạn</title>
+      <title>Shop.co - Buy Your Favorite Clothes Online</title>
       <meta
         name="description"
-        content="Trang web trao đổi mua bán hàng hóa uy tín tại Úc, cung cấp các sản phẩm chất lượng với giá cả cạnh tranh, đảm bảo giao dịch an toàn và nhanh chóng."
+        content="Shop.co offers a wide range of stylish and affordable clothes. Enjoy a seamless shopping experience with fast delivery and secure transactions."
       />
       <meta
         name="keywords"
-        content="mua bán hàng hóa, trao đổi hàng hóa, mua bán online, trang web mua bán tại Úc, sản phẩm chất lượng, giá rẻ, giao dịch an toàn"
+        content="buy clothes online, fashion, affordable clothes, trendy outfits, online shopping, Shop.co"
       />
       <meta name="robots" content="index, follow" />
       <meta name="googlebot" content="index, follow" />
@@ -79,28 +84,31 @@ const MetaTags = () => {
       <meta charSet="utf-8" />
       <meta
         property="og:title"
-        content="Trang web trao đổi mua bán hàng hóa tại Úc"
+        content="Shop.co - Your Go-To Online Clothing Store"
       />
       <meta
         property="og:description"
-        content="Cung cấp các sản phẩm chất lượng với giá cả cạnh tranh, đảm bảo giao dịch an toàn và nhanh chóng tại Úc."
+        content="Discover the latest fashion trends at Shop.co. Shop now for stylish and affordable clothing with fast delivery and secure payments."
       />
-      <meta property="og:sitename" content="HangVietTaiUc" />
-      <meta property="og:url" content="https://hangviettaiuc.com.vn/" />
+      <meta property="og:sitename" content="Shop.co" />
+      <meta property="og:url" content="https://shop.co/" />
       <meta property="og:type" content="website" />
       <meta property="og:locale" content="en_US" />
-      <meta property="og:updated_time" content="2024-06-20T02:08:26+00:00" />
+      <meta property="og:updated_time" content="2024-06-29T02:08:26+00:00" />
       <meta
         property="og:image"
-        content={`${process.env.NEXT_PUBLIC_REDIRECT_URI}/social_image_homepage.jpg`}
+        content={`${process.env.NEXT_PUBLIC_REDIRECT_URI}/logo.svg`}
       />
       <meta
         property="og:image:secure_url"
-        content={`${process.env.NEXT_PUBLIC_REDIRECT_URI}/social_image_homepage.jpg`}
+        content={`${process.env.NEXT_PUBLIC_REDIRECT_URI}/logo.svg`}
       />
-      <meta property="og:image:width" content="900" />
-      <meta property="og:image:height" content="900" />
-      <meta property="og:image:alt" content="Trao đổi hàng hóa Việt Nam - Úc" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta
+        property="og:image:alt"
+        content="Shop.co - Your Online Fashion Store"
+      />
       <meta property="og:image:type" content="image/jpeg" />
       <meta
         property="article:published_time"
@@ -108,23 +116,23 @@ const MetaTags = () => {
       />
       <meta
         property="article:modified_time"
-        content="2024-06-22T02:08:26+00:00"
+        content="2024-06-29T02:08:26+00:00"
       />
       <meta name="twitter:card" content="summary_large_image" />
       <meta
         name="twitter:title"
-        content="Trang web trao đổi mua bán hàng hóa tại Úc"
+        content="Shop.co - Your Go-To Online Clothing Store"
       />
       <meta
         name="twitter:description"
-        content="Cung cấp các sản phẩm chất lượng với giá cả cạnh tranh, đảm bảo giao dịch an toàn và nhanh chóng tại Úc."
+        content="Discover the latest fashion trends at Shop.co. Shop now for stylish and affordable clothing with fast delivery and secure payments."
       />
       <meta
         name="twitter:image"
-        content={`${process.env.NEXT_PUBLIC_REDIRECT_URI}/social_image_homepage.jpg`}
+        content={`${process.env.NEXT_PUBLIC_REDIRECT_URI}/logo.svg`}
       />
       <meta name="twitter:label1" content="Written by" />
-      <meta name="twitter:data1" content="Academic Team" />
+      <meta name="twitter:data1" content="Shop.co Team" />
       <meta name="twitter:label2" content="Time to read" />
       <meta name="twitter:data2" content="2 minutes" />
       <link rel="icon" href="/logo.svg" type="image/x-icon" />
