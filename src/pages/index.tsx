@@ -7,18 +7,12 @@ import Categories from "@/page-sections/HomePage/HomeCategory";
 import Discount from "@/page-sections/HomePage/Discount";
 import { brandItems, productItems } from "@/constant";
 import ProductSection from "@/page-sections/HomePage/ProductSection";
-import HomeNavbar from "@/page-sections/HomePage/HomeNavbar";
 import Head from "next/head";
 import HomeBanner from "@/page-sections/HomePage/Banner";
 import Brands from "@/page-sections/HomePage/Brands";
 import { ProductProps } from "@/components/Product";
 
 const Home: React.FC = () => {
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const handleActiveIndex = (index: number) => {
-    setActiveIndex(index);
-  };
-
   const [newArrivalProducts, setNewArrivalProducts] = React.useState<
     ProductProps[]
   >([]);
@@ -46,12 +40,6 @@ const Home: React.FC = () => {
         <Navbar />
         <HomeBanner />
         <Brands brands={brandItems} />
-
-        {/*  */}
-        {/* <HomeNavbar
-          activeIndex={activeIndex}
-          handleActiveIndex={handleActiveIndex}
-        /> */}
         <ProductSection
           products={newArrivalProducts}
           sectionName="NEW ARRIVALS"
@@ -59,7 +47,6 @@ const Home: React.FC = () => {
         <ProductSection products={saleProducts} sectionName="TOP SELLING" />
         <Categories />
         <Forum />
-        {/* <CallAction /> */}
         <Footer />
       </main>
     </Fragment>
