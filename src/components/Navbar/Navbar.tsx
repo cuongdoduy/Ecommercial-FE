@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,16 +7,24 @@ import Logo from "public/logo.svg";
 import Avatar from "public/avatar.svg";
 import Cart from "public/cart.svg";
 import Search from "./Search";
+import { CartContext } from "@/contexts/CartContext";
+import ProfileMenu from "../AvatarList";
+import Button from "../Button";
 
 const Navbar: React.FC = () => {
   const [isLogin, setIsLogin] = React.useState(false);
+  const [totalItems, setTotalItems] = React.useState(0);
+
+  const { cartItems } = useContext(CartContext) || {};
+  const cartItemsLength = cartItems?.length;
 
   useEffect(() => {
-    setIsLogin(true);
-  }, []);
+    setIsLogin(false);
+    setTotalItems(cartItemsLength || 0);
+  }, [cartItemsLength]);
 
   return (
-    <nav className="p-5 w-[95%] mx-auto">
+    <nav className="p-5 w-[85%] mx-auto">
       <div className="flex items-center justify-around hidden md:flex">
         <Link href="/">
           <Image src={Logo} alt="logo" />
@@ -31,7 +39,7 @@ const Navbar: React.FC = () => {
           </Link>
         ))}
         <Search />
-        <Link href="/cart" className="text-h5">
+        <Link href="/cart" className="text-h5 relative">
           <Image
             src={Cart}
             alt="cart"
@@ -40,21 +48,25 @@ const Navbar: React.FC = () => {
             sizes="100vw"
             className="w-[24px] h-[24px]"
           />
+          <span className="rounded-[999px] px-2 bg-[#ff0000] absolute top-[-10px] min-w-[20px] h-[20px ] left-[16px] text-[11px]">
+            {totalItems}
+          </span>
         </Link>
         {isLogin ? (
-          <Link href="/trang-ca-nhan" className="text-h5 mx-5">
-            <Image
+          <>
+            {/* <Image
               src={Avatar}
               alt="avatar"
               width="0"
               height="0"
               sizes="100vw"
               className="w-[24px] h-[24px]"
-            />
-          </Link>
+            /> */}
+            <ProfileMenu />
+          </>
         ) : (
           <Link href="/login" className="text-h5 mx-5">
-            Login
+            <Button title="Login" className="!px-[24px] !py-[12px]" />
           </Link>
         )}
       </div>

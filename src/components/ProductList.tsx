@@ -1,7 +1,6 @@
 import React from "react";
 import Product, { ProductProps } from "./Product";
 import Button from "./Button";
-import DownArrow from "public/down_arrow.svg";
 
 interface ProductListProps {
   products: ProductProps[];

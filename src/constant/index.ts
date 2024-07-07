@@ -7,11 +7,6 @@ import Image2 from "public/categories/formal.svg";
 import Image3 from "public/categories/party.svg";
 import Image4 from "public/categories/gym.svg";
 
-import ShirtView1 from "public/clothes/shirt_view_1.png";
-import ShirtView2 from "public/clothes/shirt_view_2.png";
-import ShirtView3 from "public/clothes/shirt_view_3.png";
-
-import ProductImage from "public/productImg.jpg";
 import ApplicationImage from "public/application.svg";
 import DisableAppliactionImage from "public/application_notactive.svg";
 
@@ -22,7 +17,6 @@ import Versace from "public/brands/versace.svg";
 import Zara from "public/brands/zara.svg";
 
 import { StaticImageData } from "next/image";
-import { ProductProps } from "@/components/Product";
 
 type NavItem = {
   name: string;
@@ -189,37 +183,6 @@ export const categoryItems: Array<{
   },
 ];
 
-export const productItems: Array<ProductProps> = [
-  {
-    name: "Fish Sauce Squid Brand",
-    price: 865.99,
-    image: ProductImage,
-    discount: 10,
-    starRating: 4,
-  },
-  {
-    name: "Fish Sauce Squid Brand",
-    price: 865.99,
-    image: ProductImage,
-    starRating: 3,
-    discount: 10,
-  },
-  {
-    name: "Fish Sauce Squid Brand",
-    price: 865.99,
-    image: ProductImage,
-    starRating: 2,
-    discount: 10,
-  },
-  {
-    name: "Fish Sauce Squid Brand",
-    price: 865.99,
-    image: ProductImage,
-    starRating: 5,
-    discount: 10,
-  },
-];
-
 export const homePageNavItems: Array<{
   name: string;
   active_icon?: string | StaticImageData;
@@ -279,7 +242,50 @@ export const brandItems: Brand[] = [
 ];
 
 export const shirtViewImages: string[] | StaticImageData[] = [
-  '/clothes/shirt_view_1.png',
-  '/clothes/shirt_view_2.png',
-  '/clothes/shirt_view_3.png',
+  "/clothes/shirt_view_1.png",
+  "/clothes/shirt_view_2.png",
+  "/clothes/shirt_view_3.png",
+];
+
+export interface Review {
+  startRate: number;
+  name: string;
+  review_desc: string;
+  date: string;
+}
+
+export const reviews: Review[] = [
+  {
+    startRate: 5,
+    name: "John Doe",
+    review_desc:
+      "I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable. As a fellow designer, I appreciate the attention to detail. It's become my favorite go-to shirt.",
+    date: "2024-06-01",
+  },
+  {
+    startRate: 4,
+    name: "Jane Smith",
+    review_desc:
+      "Soft fabric and careful stitching. The shirt looks great and is very dynamic.",
+    date: "2024-06-05",
+  },
+  {
+    startRate: 3,
+    name: "Mike Johnson",
+    review_desc:
+      "The shirt has a nice design but isn't very durable after a few washes.",
+    date: "2024-06-10",
+  },
+  {
+    startRate: 5,
+    name: "Emily Davis",
+    review_desc: "Very satisfied with the quality and fast delivery service.",
+    date: "2024-06-15",
+  },
+  {
+    startRate: 4,
+    name: "Chris Lee",
+    review_desc: "Comfortable and stylish shirt, but a bit expensive.",
+    date: "2024-06-20",
+  },
 ];

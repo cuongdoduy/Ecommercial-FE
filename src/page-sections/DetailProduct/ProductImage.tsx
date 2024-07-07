@@ -11,7 +11,7 @@ const ProductImage: React.FC<ProductImageProps> = ({ images }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   return (
-    <div className="grid grid-cols-4 w-[40%] gap-4 max-h-[530px]">
+    <div className="grid grid-cols-4 w-[40%] gap-4 max-h-[420px]">
       <div className="grid grid-rows-3 gap-4 my-[20px] col-span-1">
         {images?.map((image, index) => (
           <div

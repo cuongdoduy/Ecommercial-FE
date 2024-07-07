@@ -13,6 +13,7 @@ export interface ProductProps {
   discount: number;
   starRating: number;
   slug?: string;
+  in_stock?: number;
 }
 
 const Product: React.FC<ProductProps> = ({

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Star from "public/star.svg";
 import StarNotPassed from "public/star_none.svg";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import TickIcon from "public/tick.svg";
 import AddIcon from "public/addition.svg";
 import MinusIcon from "public/subtraction.svg";
+import { CartContext } from "@/contexts/CartContext";
 
 interface ProductDescriptionProps {
   name: string;
@@ -12,6 +13,8 @@ interface ProductDescriptionProps {
   starRating: number;
   description: string;
   discount: number;
+  in_stock?: number;
+  images: string[] | StaticImageData[];
 }
 
 const ProductDescription: React.FC<ProductDescriptionProps> = (
@@ -19,12 +22,16 @@ const ProductDescription: React.FC<ProductDescriptionProps> = (
 ) => {
   const maxStar = 5;
 
+  const {
+    addToCart,
+  } = useContext(CartContext) || {};
+
   const [userChoose, setUserChoose] = React.useState<{
     color: string;
     size: string;
     quantiy: number;
   }>({
-    color: "",
+    color: "#4F4631",
     size: "Small",
     quantiy: 1,
   });
@@ -81,12 +88,9 @@ const ProductDescription: React.FC<ProductDescriptionProps> = (
             </p>
           </div>
         </div>
-        <div
-          className="text-body my-2 text-[#A9A9A9]"
-          dangerouslySetInnerHTML={{
-            __html: productDescription.description,
-          }}
-        ></div>
+        <span className="text-caption text-[#000000] opacity-[0.6]">
+          Remaining : <b>{productDescription.in_stock}</b>
+        </span>
       </div>
       <div className="py-4 border-t-[1px] border-[#9A9A9A]">
         <p className="text-body text-[#000000] opacity-[0.6]">Select Colors</p>
@@ -170,6 +174,15 @@ const ProductDescription: React.FC<ProductDescriptionProps> = (
           </div>
           <button
             className={`py-[12px] px-[24px] rounded-[62px] mx-2 first:ml-0 cursor-pointer text-white bg-[#000000] min-w-[400px]`}
+            onClick={() => addToCart && addToCart({
+              id: productDescription.name,
+              name: productDescription.name,
+              price: productDescription.price,
+              quantity: userChoose.quantiy,
+              image: productDescription.images[0],
+              size: userChoose.size,
+              color: userChoose.color,
+            })}
           >
             Add To Cart
           </button>

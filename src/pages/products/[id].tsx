@@ -84,6 +84,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       images: shirtViewImages,
       description: product.description,
       discount: product?.discountPercentage || 0,
+      in_stock: product?.stock || 0,
     };
     return {
       props: { product: productItem, id },

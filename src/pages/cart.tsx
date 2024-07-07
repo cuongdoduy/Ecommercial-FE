@@ -1,36 +1,11 @@
 import React, { Fragment, useEffect } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer";
-import CallAction from "@/page-sections/HomePage/CallAction";
-import Forum from "@/page-sections/HomePage/Forum/Forum";
-import Categories from "@/page-sections/HomePage/HomeCategory";
 import Discount from "@/page-sections/HomePage/Discount";
-import { brandItems } from "@/constant";
-import ProductSection from "@/page-sections/HomePage/ProductSection";
 import Head from "next/head";
-import HomeBanner from "@/page-sections/HomePage/Banner";
-import Brands from "@/page-sections/HomePage/Brands";
-import { ProductProps } from "@/components/Product";
+import CartPage from "@/page-sections/CartPage/CartPage";
 
 const Home: React.FC = () => {
-  const [newArrivalProducts, setNewArrivalProducts] = React.useState<
-    ProductProps[]
-  >([]);
-  const [saleProducts, setSaleProducts] = React.useState<ProductProps[]>([]);
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch("/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      setNewArrivalProducts(data.new_arrivals);
-      setSaleProducts(data.top_sellers);
-    };
-    fetchProducts();
-  }, []);
 
   return (
     <Fragment>
@@ -38,15 +13,7 @@ const Home: React.FC = () => {
       <main>
         <Discount />
         <Navbar />
-        <HomeBanner />
-        <Brands brands={brandItems} />
-        <ProductSection
-          products={newArrivalProducts}
-          sectionName="NEW ARRIVALS"
-        />
-        <ProductSection products={saleProducts} sectionName="TOP SELLING" />
-        <Categories />
-        <Forum />
+        <CartPage />
         <Footer />
       </main>
     </Fragment>
