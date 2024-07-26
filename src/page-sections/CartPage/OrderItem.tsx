@@ -4,6 +4,7 @@ import React from "react";
 import Trash from "public/trash.svg";
 import AddIcon from "public/addition.svg";
 import MinusIcon from "public/subtraction.svg";
+import useDebounce from "@/hooks/useDebounce";
 
 interface OrderItemProps extends CartItem {
   handleIncrement: (cart: CartItem) => void;
@@ -12,6 +13,27 @@ interface OrderItemProps extends CartItem {
 }
 
 const OrderItem: React.FC<OrderItemProps> = (cart) => {
+  const [quantity, setQuantity] = React.useState(cart.quantity);
+
+  const quantityDebounce = useDebounce(quantity, 500);
+
+  const handleIncrement = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrement = () => {
+    setQuantity(quantity - 1);
+  };
+
+  React.useEffect(() => {
+    // newValue > cart.quantity
+    cart.handleDecrement({
+      ...cart,
+      quantity: Number(quantityDebounce),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quantityDebounce]);
+
   return (
     <div className="grid grid-cols-10 gap-4">
       <div className="col-span-3 h-[184px]">
@@ -47,15 +69,12 @@ const OrderItem: React.FC<OrderItemProps> = (cart) => {
             className={`${
               cart.quantity === 1 && "opacity-[0.3] cursor-auto"
             } cursor-pointer`}
-            onClick={() => cart.quantity != 1 && cart.handleDecrement(cart)}
+            onClick={() => cart.quantity != 1 && handleDecrement()}
           >
             <Image src={MinusIcon} alt="minus" width={16} height={16} />
           </div>
-          <p className="font-[700]">{cart.quantity}</p>
-          <div
-            className="cursor-pointer"
-            onClick={() => cart.handleIncrement(cart)}
-          >
+          <p className="font-[700]">{quantity}</p>
+          <div className="cursor-pointer" onClick={() => handleIncrement()}>
             <Image src={AddIcon} alt="minus" width={16} height={16} />
           </div>
         </div>

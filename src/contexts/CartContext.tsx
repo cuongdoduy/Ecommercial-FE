@@ -1,5 +1,7 @@
+import { ProductProps } from "@/components/Product";
 import { StaticImageData } from "next/image";
 import React, { createContext, useState, useEffect, ReactNode } from "react";
+import { toast } from "react-toastify";
 
 export interface CartItem {
   id: string;
@@ -30,42 +32,90 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(
-    typeof window !== "undefined" && localStorage.getItem("cartItems")
-      ? JSON.parse(localStorage.getItem("cartItems") as string)
-      : []
-  );
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const addToCart = (item: CartItem) => {
-    const isItemInCart = cartItems.find((cartItem) => cartItem.id === item.id);
+  const fetchCart = async () => {
+    const res = await fetch("/api/cart", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    if (isItemInCart) {
-      setCartItems(
-        cartItems.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + item.quantity }
-            : cartItem
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...item, quantity: item.quantity }]);
+    if (res.ok) {
+      const data = await res.json();
+      const cartConvert = data.cart.products.map((product: any) => {
+        const productItem = {
+          id: product._id,
+          name: product.title,
+          price: product.price,
+          image: product.thumbnail.startsWith("http")
+            ? product.thumbnail
+            : `${process.env.NEXT_PUBLIC_API_URL}${product.thumbnail}`,
+          color: "red",
+          size: "M",
+          quantity: product.quantity,
+        };
+        return productItem;
+      });
+      setCartItems(cartConvert);
     }
-  };  
+  };
+
+  const updateCart = async (item: CartItem) => {
+    const res = await fetch("/api/cart", {
+      method: "PATCH",
+      body: JSON.stringify({
+        product_id: item.id,
+        quantity: item.quantity,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.ok) {
+      fetchCart();
+    }
+  };
+
+  const removeCart = async (id: string) => {
+    const res = await fetch("/api/cart", {
+      method: "DELETE",
+      body: JSON.stringify({
+        product_id: id,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.ok) {
+      fetchCart();
+    }
+  };
+
+
+  const addToCart = async (item: CartItem) => {
+    const res = await fetch("/api/cart", {
+      method: "POST",
+      body: JSON.stringify({
+        product_id: item.id,
+        quantity: item.quantity,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.ok) {
+      // toast.success("Added to cart successfully");
+      fetchCart();
+    }
+  };
 
   const removeFromCart = (item: CartItem) => {
-    const isItemInCart = cartItems.find((cartItem) => cartItem.id === item.id);
-
-    if (isItemInCart && isItemInCart.quantity === 1) {
-      setCartItems(cartItems.filter((cartItem) => cartItem.id !== item.id));
-    } else {
-      setCartItems(
-        cartItems.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-      );
-    }
+    updateCart(item);
   };
 
   const clearCart = () => {
@@ -84,18 +134,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   const removeItem = (id: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+    removeCart(id);
   };
 
   useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  useEffect(() => {
-    const cartItems = localStorage.getItem("cartItems");
-    if (cartItems) {
-      setCartItems(JSON.parse(cartItems));
-    }
+    fetchCart();
   }, []);
 
   return (

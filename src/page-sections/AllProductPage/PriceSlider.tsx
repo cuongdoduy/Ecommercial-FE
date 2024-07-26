@@ -30,7 +30,7 @@ const PriceSlider = () => {
         $100
       </span>
       <span className="text-sm text-primary absolute start-[40%] -bottom-6 font-bold">
-        ${min}
+        ${(max-min)/2}
       </span>
       <span className="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">
         $1500

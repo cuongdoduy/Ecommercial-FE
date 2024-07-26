@@ -6,8 +6,10 @@ import TickIcon from "public/tick.svg";
 import AddIcon from "public/addition.svg";
 import MinusIcon from "public/subtraction.svg";
 import { CartContext } from "@/contexts/CartContext";
+import { toast } from "react-toastify";
 
 interface ProductDescriptionProps {
+  id: string;
   name: string;
   price: number;
   starRating: number;
@@ -22,9 +24,7 @@ const ProductDescription: React.FC<ProductDescriptionProps> = (
 ) => {
   const maxStar = 5;
 
-  const {
-    addToCart,
-  } = useContext(CartContext) || {};
+  const { addToCart } = useContext(CartContext) || {};
 
   const [userChoose, setUserChoose] = React.useState<{
     color: string;
@@ -162,7 +162,9 @@ const ProductDescription: React.FC<ProductDescriptionProps> = (
             </div>
             <p className="font-[700]">{userChoose.quantiy}</p>
             <div
+              className={`${userChoose.quantiy === productDescription.in_stock && "opacity-[0.3]"}`}
               onClick={() =>
+                userChoose.quantiy < (productDescription.in_stock || 0) &&
                 setUserChoose({
                   ...userChoose,
                   quantiy: userChoose.quantiy + 1,
@@ -174,15 +176,19 @@ const ProductDescription: React.FC<ProductDescriptionProps> = (
           </div>
           <button
             className={`py-[12px] px-[24px] rounded-[62px] mx-2 first:ml-0 cursor-pointer text-white bg-[#000000] min-w-[400px]`}
-            onClick={() => addToCart && addToCart({
-              id: productDescription.name,
-              name: productDescription.name,
-              price: productDescription.price,
-              quantity: userChoose.quantiy,
-              image: productDescription.images[0],
-              size: userChoose.size,
-              color: userChoose.color,
-            })}
+            onClick={() => {
+              addToCart &&
+                addToCart({
+                  id: productDescription.id,
+                  name: productDescription.name,
+                  price: productDescription.price,
+                  quantity: userChoose.quantiy,
+                  image: productDescription.images[0],
+                  size: userChoose.size,
+                  color: userChoose.color,
+                });
+              toast.success("Added to cart successfully");
+            }}
           >
             Add To Cart
           </button>

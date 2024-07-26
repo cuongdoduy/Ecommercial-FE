@@ -14,6 +14,7 @@ const getProductDetail = async (
   res: NextApiResponse<Data | Error>
 ) => {
   if (req.method === "POST") {
+      
     const slug = req.body.slug;
     const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
     const endpoint = `${API_URL}/products/detail/${slug}`;
@@ -26,8 +27,8 @@ const getProductDetail = async (
     if (response.ok) {
       const data = await response.json();
       const { product } = data;
-
       const productItem: ProductProps = {
+        id: product._id,
         name: product.title,
         price: product.price,
         image: product.thumbnail.startsWith("http")

@@ -3,6 +3,7 @@ import { CartContext } from "@/contexts/CartContext";
 import DiscountTag from "public/discount.svg";
 import Image from "next/image";
 import Button from "@/components/Button";
+import Link from "next/link";
 
 const OrderSummary = () => {
   const { getCartTotal } = useContext(CartContext) || {};
@@ -45,9 +46,9 @@ const OrderSummary = () => {
           <Button title="Apply" className="!py-[12px]" />
         </div>
       </div>
-      <div className="w-[100%]">
+      <Link className="w-[100%]" href={'/cart/shipping'}>
         <Button title="Go To Checkout" className="!py-[12px] w-full" />
-      </div>
+      </Link>
     </div>
   );
 };

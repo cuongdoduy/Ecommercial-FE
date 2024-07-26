@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer";
 import Discount from "@/page-sections/HomePage/Discount";
 import Head from "next/head";
-import CartPage from "@/page-sections/CartPage/CartPage";
+import CheckoutPage from "@/page-sections/CheckoutPage";
 
-const Home: React.FC = () => {
+const Shipping: React.FC = () => {
 
   return (
     <Fragment>
@@ -13,7 +13,7 @@ const Home: React.FC = () => {
       <main>
         <Discount />
         <Navbar />
-        <CartPage />
+        <CheckoutPage  />
         <Footer />
       </main>
     </Fragment>
@@ -94,4 +94,4 @@ export const MetaTags = () => {
   );
 };
 
-export default Home;
+export default Shipping;

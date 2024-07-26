@@ -1,12 +1,12 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import { ProductProps } from "@/components/Product";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { StaticImageData } from "next/image";
-import { shirtViewImages } from "@/constant";
 import React from "react";
 import ProductDetailSection from "@/page-sections/DetailProduct/ProductSection";
 import { MetaTags } from "..";
+import { ToastContainer } from "react-toastify";
 
 export interface ProductDetailProps extends ProductProps {
   images: string[] | StaticImageData[];
@@ -22,6 +22,7 @@ const ProductDetail: React.FC<{
       <MetaTags />
       <Navbar />
       <ProductDetailSection {...product} />
+      <ToastContainer />
       <Footer />
     </>
   );
@@ -29,51 +30,38 @@ const ProductDetail: React.FC<{
 
 export default ProductDetail;
 
-export const getStaticPaths = async () => {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
-  const endpoint = `${API_URL}/products`;
-  const response = await fetch(endpoint, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (response.ok) {
-    const data = await response.json();
-    const { products } = data;
-    const paths = products
-      .filter((product: any) => product.slug != undefined && product.thumbnail != undefined)
-      .map((product: any) => ({
-        params: {
-          id: product?.slug,
-        },
-      }));
-    return {
-      paths,
-      fallback: true,
-    };
-  } else {
-    return {
-      paths: [],
-      fallback: true,
-    };
-  }
-};
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const id = params?.id;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+
+  const cartId = context.req.cookies.cartId; // Get cartId from cookies
+
+  let headers: {
+    "Content-Type": string;
+    Cookie?: string;
+  } = {
+    "Content-Type": "application/json",
+  };
+
+  // Add cartId to headers if it exists
+  if (cartId) {
+    headers.Cookie = `cartId=${cartId}`;
+  }
+
+  const id = context.query.id as string;
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
   const endpoint = `${API_URL}/products/detail/${id}`;
   const response = await fetch(endpoint, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: headers,
   });
   if (response.ok) {
     const data = await response.json();
     const { product } = data;
+    const image = product.thumbnail.startsWith("http")
+      ? product.thumbnail
+      : `${API_URL}${product.thumbnail}`;
     const productItem: ProductDetailProps = {
+      id: product._id,
       name: product.title,
       price: product.price,
       image: product.thumbnail.startsWith("http")
@@ -81,7 +69,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         : `${API_URL}${product.thumbnail}`,
       starRating: Math.floor(Math.random() * 5) + 1,
       slug: product.slug,
-      images: shirtViewImages,
+      images: [image],
       description: product.description,
       discount: product?.discountPercentage || 0,
       in_stock: product?.stock || 0,

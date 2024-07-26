@@ -6,6 +6,7 @@ import {
   Avatar,
   Typography,
 } from "@material-tailwind/react";
+import { signOut } from "next-auth/react";
 import React from "react";
 
 const ProfileMenu: React.FC = () => {
@@ -16,7 +17,8 @@ const ProfileMenu: React.FC = () => {
           variant="circular"
           alt="tania andrew"
           className="cursor-pointer"
-          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+          size="sm"
+          src={process.env.NEXT_PUBLIC_REDIRECT_URI + "/user.svg"}
         />
       </MenuHandler>
       <MenuList>
@@ -115,9 +117,11 @@ const ProfileMenu: React.FC = () => {
               fill="#90A4AE"
             />
           </svg>
-          <Typography variant="small" className="font-medium text-primary">
+          <div onClick={()=>signOut()}>
+          <Typography variant="small" className="font-medium text-primary" >
             Sign Out
           </Typography>
+          </div>
         </MenuItem>
       </MenuList>
     </Menu>

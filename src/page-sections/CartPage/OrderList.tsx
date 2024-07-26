@@ -16,8 +16,7 @@ const OrderList = () => {
   }, [cartItems]);
 
   const handleIncrement = (cart: CartItem) => {
-    const newCart = { ...cart, quantity: 1 };
-    return addToCart && addToCart(newCart);
+    return addToCart && addToCart(cart);
   };
 
   const handleDecrement = (cart: CartItem) => {

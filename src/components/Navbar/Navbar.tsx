@@ -10,6 +10,7 @@ import Search from "./Search";
 import { CartContext } from "@/contexts/CartContext";
 import ProfileMenu from "../AvatarList";
 import Button from "../Button";
+import { signIn, useSession } from "next-auth/react";
 
 const Navbar: React.FC = () => {
   const [isLogin, setIsLogin] = React.useState(false);
@@ -18,13 +19,14 @@ const Navbar: React.FC = () => {
   const { cartItems } = useContext(CartContext) || {};
   const cartItemsLength = cartItems?.length;
 
+  const { data: session } = useSession();
+
   useEffect(() => {
-    setIsLogin(false);
     setTotalItems(cartItemsLength || 0);
   }, [cartItemsLength]);
 
   return (
-    <nav className="p-5 w-[85%] mx-auto">
+    <nav className="p-5 w-[95%] mx-auto">
       <div className="flex items-center justify-around hidden md:flex">
         <Link href="/">
           <Image src={Logo} alt="logo" />
@@ -52,7 +54,7 @@ const Navbar: React.FC = () => {
             {totalItems}
           </span>
         </Link>
-        {isLogin ? (
+        {session?.user ? (
           <>
             {/* <Image
               src={Avatar}
@@ -65,9 +67,9 @@ const Navbar: React.FC = () => {
             <ProfileMenu />
           </>
         ) : (
-          <Link href="/login" className="text-h5 mx-5">
+          <div onClick={() => signIn()}>
             <Button title="Login" className="!px-[24px] !py-[12px]" />
-          </Link>
+          </div>
         )}
       </div>
     </nav>

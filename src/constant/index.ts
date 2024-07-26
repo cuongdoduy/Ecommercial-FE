@@ -31,20 +31,20 @@ type SocialItem = {
 
 export const navItems: NavItem[] = [
   {
-    name: "Shop",
-    url: "/",
+    name: "All Clothes",
+    url: "/products",
   },
   {
     name: "On Sale",
-    url: "/sale",
+    url: "#",
   },
   {
     name: "New Arrivals",
-    url: "/new-arrivals",
+    url: "#",
   },
   {
     name: "Brands",
-    url: "/brands",
+    url: "#",
   },
 ];
 

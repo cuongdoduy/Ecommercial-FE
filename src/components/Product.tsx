@@ -6,6 +6,7 @@ import StarNotPassed from "public/star_none.svg";
 import Link from "next/link";
 
 export interface ProductProps {
+  id: string;
   name: string;
   price: number;
   image: string | StaticImageData;

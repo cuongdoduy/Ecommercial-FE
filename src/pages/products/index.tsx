@@ -4,12 +4,11 @@ import AllProductList from "@/page-sections/AllProductPage";
 import Discount from "@/page-sections/HomePage/Discount";
 import React from "react";
 import { MetaTags } from "..";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { ProductDetailProps } from "./[id]";
 import { shirtViewImages } from "@/constant";
 
 const AllProductsPage = ({ products }: { products: ProductDetailProps[] }) => {
-  console.log(products);
   return (
     <>
       <MetaTags />
@@ -23,14 +22,25 @@ const AllProductsPage = ({ products }: { products: ProductDetailProps[] }) => {
 
 export default AllProductsPage;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const cartId = req.cookies.cartId; // Get cartId from cookies
+
+  let headers: {
+    "Content-Type": string;
+    Cookie?: string;
+  } = {
+    "Content-Type": "application/json",
+  };
+
+  // Add cartId to headers if it exists
+  if (cartId) {
+    headers.Cookie = `cartId=${cartId}`;
+  }
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
   const endpoint = `${API_URL}/products`;
   const response = await fetch(endpoint, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: headers,
   });
   if (response.ok) {
     const data = await response.json();
@@ -42,6 +52,7 @@ export const getStaticProps: GetStaticProps = async () => {
       )
       .map((product: any) => {
         const productItem: ProductDetailProps = {
+          id: product._id,
           name: product.title,
           price: product.price,
           image: product.thumbnail.startsWith("http")
@@ -56,6 +67,16 @@ export const getStaticProps: GetStaticProps = async () => {
         };
         return productItem;
       });
+    const cookies = response.headers.get("set-cookie");
+    if (cookies && !cartId) {
+      const cartIdCookie = cookies.split(";")[0].split("=")[1];
+      res.setHeader(
+        "Set-Cookie",
+        `cartId=${cartIdCookie}; Path=/; Expires=${new Date(
+          Date.now() + 1000 * 60 * 60 * 24 * 365
+        ).toUTCString()}; HttpOnly; SameSite=Lax; Secure`
+      );
+    }
     return {
       props: { products: productItems },
     };
